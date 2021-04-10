@@ -23,7 +23,7 @@ grav = 0.2
 box_mov = 0
 right_mov = 0
 direction = 0
-
+bg_mov = 5
 
 while True:
     
@@ -33,9 +33,22 @@ while True:
             sys.exit()
 
         if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_LCTRL:
+                if box.rect.centerx < 330 or box.rect.centerx > 570:
+                    if box.rect.centerx < 330 :
+                        box.rect.centerx = 300
+                        y1  -= 2*bg_mov
+                        y2  -= 2*bg_mov
+                        box_mov = 5
+                        right_mov = 0
+                    if box.rect.centerx > 570:
+                        box.rect.centerx = 600
+                        y1  -= 2*bg_mov
+                        y2  -= 2*bg_mov
+                        box_mov = 5
+                        right_mov = 0
 
             if event.key == pygame.K_SPACE:
-                print(box.rect.centerx)
                 box_mov = -3
                 if direction == 'left':
                     right_mov += -3
@@ -88,8 +101,8 @@ while True:
 
     box_mov +=grav
 
-    y1 +=5
-    y2 += 5
+    y1 +=bg_mov
+    y2 += bg_mov
     if y1 >900 :
        y1 = 0
        y2 = -900
