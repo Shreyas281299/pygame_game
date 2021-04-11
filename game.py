@@ -3,6 +3,7 @@ import sys
 import random
 import time
 from customSprite import Player
+from customSprite import obs
 
 
 pygame.init()
@@ -11,26 +12,39 @@ clock = pygame.time.Clock()
 
 bg = pygame.image.load('bg.jpeg')
 bg_2 =pygame.image.load('bg.jpeg') 
-x = 0
-y1 = 0
-y2 = -900
-box_mov = 0
+
+
+
 box = Player()
 mov_sprite = pygame.sprite.Group()
 mov_sprite.add(box)
+obs_sprite = pygame.sprite.Group()
 
+spawn_obst = pygame.USEREVENT
+pygame.time.set_timer(spawn_obst,2500)
+
+
+x = 0
+y1 = 0
+y2 = -900
 grav = 0.2
 box_mov = 0
 right_mov = 0
-direction = 0
+direction = 'right'
 bg_mov = 5
+box_mov = 0
+obs_mov = 5
 
 while True:
-    
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
+        if event.type == spawn_obst:
+            met = obs()
+            obs_sprite.add(met)
+
+
 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LCTRL:
@@ -57,7 +71,7 @@ while True:
                 elif direction == 'up':
                     box_mov += 3
 
-                mov_sprite.update(box_mov,right_mov,'space')
+                mov_sprite.update(box_mov,right_mov,direction,'space')
 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_d:
@@ -65,7 +79,7 @@ while True:
                     direction = 'up'
                 else:
                     direction = 'right'
-                mov_sprite.update(box_mov,right_mov,'right')
+                mov_sprite.update(box_mov,right_mov,direction,'right')
 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_a:
@@ -73,7 +87,7 @@ while True:
                     direction = 'up'
                 else:
                     direction = 'left'
-                mov_sprite.update(box_mov,right_mov,'left')
+                mov_sprite.update(box_mov,right_mov,direction,'left')
 
         
     if box.rect.centery > 800:
@@ -108,11 +122,19 @@ while True:
        y2 = -900
 
     pygame.display.update()
+
     screen.blit(bg,(x,y1))
     screen.blit(bg_2,(x,y2))
-    mov_sprite.draw(screen)
-    
-    mov_sprite.update(box_mov,right_mov)
+
+    mov_sprite.draw(screen) 
+    obs_sprite.draw(screen)
+
+    for sprite in obs_sprite:
+        if sprite.rect.centery > 700:
+            obs_sprite.remove(sprite)
+
+    mov_sprite.update(box_mov,right_mov,direction)
+    obs_sprite.update(obs_mov)
     clock.tick(200)
 
 
