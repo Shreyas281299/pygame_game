@@ -27,6 +27,5 @@ class obs(pygame.sprite.Sprite):
         self.rect.center = (random.randint(310,590),-5)
     
 
-    
     def update(self,grav):
         self.rect.centery +=grav
