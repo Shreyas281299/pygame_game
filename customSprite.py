@@ -14,18 +14,19 @@ class Player(pygame.sprite.Sprite):
         self.rect.centerx +=right_mov
         if movement == 'space':
             self.rect.centery-=5
+     
 
 class obs(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
         i = random.randint(1,7)
-        self.image = pygame.Surface((50,50))
-        self.image = pygame.image.load(str(i)+'.png')
+        self.image = pygame.Surface((7,7))
+        self.image.fill((255,255,255))
         self.rect = self.image.get_rect()
         self. image = pygame.transform.rotate(self.image,random.randint(-180,180))
         self.rect.center = (random.randint(310,590),-5)
-    #def remove(self,group):
-    #    if self.rect.centery >900:
-    #        group.remove(self)
+    
+
+    
     def update(self,grav):
         self.rect.centery +=grav
